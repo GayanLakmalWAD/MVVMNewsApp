@@ -9,7 +9,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitInstance {
 
     companion object{
-
+        //The by lazy keyword ensures that the retrofit and api objects are not initialized
+        // until the moment they are first called in your code.
         private val retrofit by lazy {
             val logging = HttpLoggingInterceptor()
             logging.setLevel(HttpLoggingInterceptor.Level.BODY)

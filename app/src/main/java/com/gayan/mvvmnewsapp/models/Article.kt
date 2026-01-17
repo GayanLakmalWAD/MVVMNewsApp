@@ -1,4 +1,4 @@
-package com.gayan.mvvmnewsapp.ui
+package com.gayan.mvvmnewsapp.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
