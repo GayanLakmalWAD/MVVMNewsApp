@@ -9,7 +9,6 @@ import androidx.navigation.fragment.navArgs
 import com.gayan.mvvmnewsapp.R
 import com.gayan.mvvmnewsapp.databinding.FragmentArticleBinding
 import com.gayan.mvvmnewsapp.db.ArticleDatabase
-import com.gayan.mvvmnewsapp.db.ArticleDatabase.Companion.invoke
 import com.gayan.mvvmnewsapp.repository.NewsRepository
 import com.gayan.mvvmnewsapp.ui.NewsViewModel
 import com.gayan.mvvmnewsapp.ui.NewsViewModelProviderFactory
@@ -20,6 +19,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
 
     private val viewModel: NewsViewModel by activityViewModels {
         NewsViewModelProviderFactory(
+            requireActivity().application,
             NewsRepository(
                 ArticleDatabase(requireContext())
             )

@@ -1,9 +1,9 @@
 package com.gayan.mvvmnewsapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AbsListView
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -30,6 +30,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
     private val viewModel: NewsViewModel by activityViewModels {
         NewsViewModelProviderFactory(
+            requireActivity().application,
             NewsRepository(
                 ArticleDatabase(requireContext())
             )
@@ -78,6 +79,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
+                    hideErrorMessage()
                     response.data?.let {newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
                         val totalPages = newsResponse.totalResults/QUERY_PAGE_SIZE + 2
@@ -90,7 +92,10 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                 }
                 is Resource.Error -> {
                     hideProgressBar()
-                    Log.e(TAG, "Error: ${response.message}")
+                    response.message?.let { message ->
+                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG).show()
+                        showErrorMessage(message)
+                    }
                 }
                 is Resource.Loading -> {
                     showProgressBar()
@@ -99,6 +104,20 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         }
     }
 
+    private fun hideErrorMessage() {
+        binding.rvSearchNews.visibility = View.VISIBLE
+        binding.itemErrorMessage.root.visibility = View.INVISIBLE
+        isError = false
+    }
+
+    private fun showErrorMessage(message: String) {
+        binding.rvSearchNews.visibility = View.INVISIBLE
+        binding.itemErrorMessage.root.visibility = View.VISIBLE
+        binding.itemErrorMessage.tvErrorMessage.text = message
+        isError = true
+    }
+
+    var isError = false
     var isLoading = false
     var isLastPage = false
     var isScrolling = false
@@ -149,12 +168,12 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
     }
 
     private fun hideProgressBar() {
-        binding.paginationProgressBar.visibility = View.INVISIBLE
+        binding.itemErrorMessage.root.visibility = View.INVISIBLE
         isScrolling = false
     }
 
     private fun showProgressBar() {
-        binding.paginationProgressBar.visibility = View.VISIBLE
+        binding.itemErrorMessage.root.visibility = View.VISIBLE
         isScrolling = true
     }
 
