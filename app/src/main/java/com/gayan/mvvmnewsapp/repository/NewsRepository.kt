@@ -1,5 +1,6 @@
 package com.gayan.mvvmnewsapp.repository
 
+import com.gayan.mvvmnewsapp.api.RetrofitInstance
 import com.gayan.mvvmnewsapp.db.ArticleDatabase
 
 /** The Repository acts as the "Single Source of Truth." Its job is to decide whether to
@@ -9,4 +10,9 @@ class NewsRepository(
     val db: ArticleDatabase
 ) {
 
+    suspend fun getBreakingNews(countryCode: String, pageNumber: Int) =
+        RetrofitInstance.api.getBreakingNews(countryCode, pageNumber)
+
+    suspend fun  searchNews(searchQuery: String, pageNumber: Int) =
+        RetrofitInstance.api.searchForNews(searchQuery, pageNumber)
 }
