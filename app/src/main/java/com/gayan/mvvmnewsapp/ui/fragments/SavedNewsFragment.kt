@@ -23,6 +23,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
     private val viewModel: NewsViewModel by activityViewModels {
         NewsViewModelProviderFactory(
+            requireActivity().application,
             NewsRepository(
                 ArticleDatabase(requireContext())
             )

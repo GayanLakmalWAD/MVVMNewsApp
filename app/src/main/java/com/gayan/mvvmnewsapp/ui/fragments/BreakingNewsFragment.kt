@@ -1,9 +1,9 @@
 package com.gayan.mvvmnewsapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AbsListView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -22,7 +22,9 @@ import com.gayan.mvvmnewsapp.util.Resource
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
     private val viewModel: NewsViewModel by activityViewModels {
+
         NewsViewModelProviderFactory(
+            requireActivity().application,
             NewsRepository(
                 ArticleDatabase(requireContext())
             )
@@ -59,6 +61,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
+                    hideErrorMessage()
                     response.data?.let {newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
                         val totalPages = newsResponse.totalResults/QUERY_PAGE_SIZE + 2
@@ -70,7 +73,10 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                 }
                 is Resource.Error -> {
                     hideProgressBar()
-                    Log.e(TAG, "Error: ${response.message}")
+                    response.message?.let { message ->
+                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG).show()
+                        showErrorMessage(message)
+                    }
                 }
                 is Resource.Loading -> {
                     showProgressBar()
@@ -79,6 +85,20 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         }
     }
 
+    private fun hideErrorMessage() {
+        binding.rvBreakingNews.visibility = View.VISIBLE
+        binding.itemErrorMessage.root.visibility = View.INVISIBLE
+        isError = false
+    }
+
+    private fun showErrorMessage(message: String) {
+        binding.rvBreakingNews.visibility = View.INVISIBLE
+        binding.itemErrorMessage.root.visibility = View.VISIBLE
+        binding.itemErrorMessage.tvErrorMessage.text = message
+        isError = true
+    }
+
+    var isError = false
     var isLoading = false
     var isLastPage = false
     var isScrolling = false
