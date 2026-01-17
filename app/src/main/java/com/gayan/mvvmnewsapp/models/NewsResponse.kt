@@ -1,4 +1,4 @@
-package com.gayan.mvvmnewsapp.ui
+package com.gayan.mvvmnewsapp.models
 
 data class NewsResponse(
     val articles: List<Article>,

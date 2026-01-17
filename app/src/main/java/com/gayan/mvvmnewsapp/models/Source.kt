@@ -1,4 +1,4 @@
-package com.gayan.mvvmnewsapp.ui
+package com.gayan.mvvmnewsapp.models
 
 data class Source(
     val id: String,
