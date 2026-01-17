@@ -96,4 +96,9 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }
