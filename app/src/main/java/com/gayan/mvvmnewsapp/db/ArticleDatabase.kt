@@ -9,7 +9,8 @@ import com.gayan.mvvmnewsapp.models.Article
 
 @Database(
     entities = [Article::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 //Room can only store primitive types (int, string, etc.)
 //here we are using TypeConverter to get "Source".
