@@ -33,7 +33,7 @@ The app uses the **MVVM (Model-View-ViewModel)** architecture:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/MVVMNewsApp.git
+   git clone https://github.com/GayanLakmalWAD/MVVMNewsApp.git
    ```
 2. Open the project in **Android Studio**.
 3. **API Key Setup**:
