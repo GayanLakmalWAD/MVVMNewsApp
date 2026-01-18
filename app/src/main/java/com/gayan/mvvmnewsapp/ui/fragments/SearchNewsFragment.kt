@@ -54,10 +54,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
             val bundle = Bundle().apply {
                 putSerializable("article", it)
             }
-            findNavController().navigate(
-                R.id.action_searchNewsFragment_to_articleFragment,
-                bundle
-            )
+            findNavController().navigate(R.id.articleFragment, bundle)
         }
         var job: Job? = null
         binding.etSearch.addTextChangedListener{editable ->
